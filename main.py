@@ -108,7 +108,7 @@ def make_pw_hash(name, pw, salt = None):
 
 # verify password
 def valid_pw(name, password, h):
-	salt = h.split('|')[0]
+	salt = h.split(',')[0]
 	return h == make_pw_hash(name, password, salt)
 
 # create the ancestor element in the database used to store users
@@ -284,7 +284,7 @@ class Login(BlogHandler):
 		u = User.login(username, password)
 		if u:
 			self.login(u)
-			self.redirect('/blog')
+			self.redirect('unit3/welcome')
 		else:
 			msg = "Invaid login"
 			self.render('login.html', error = msg)
@@ -319,5 +319,5 @@ app = webapp2.WSGIApplication([
     ('/logout', Logout),
     ('/welcome', Welcome),
     ('/unit2/signup', Unit2Signup),
-    ('unit3/welcome', Unit3Welcome)
+    ('/unit3/welcome', Unit3Welcome)
 ], debug=True)
