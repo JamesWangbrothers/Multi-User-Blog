@@ -6,7 +6,7 @@
 
 		<div class="post-date">
 			<!-- datetime object in python, print a human readable version of it -->
-			{{p.created.strftime("%b %d, %Y")}} <!-- strings for printing dates -->
+			{{p.created.strftime("%b %d, %Y")}} by: {{p.author}} | Total likes: <span class="badge">{{p.likes}}</span><!-- strings for printing dates -->
 		</div>
 	</div>
 	
