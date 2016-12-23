@@ -8,8 +8,23 @@
 </div>
 {% if user %}
 	<form method = "POST">
-		<input type="submit" name='edit' value='&#9998; edit'>
-        <input type="submit" name='delete' value="&#9003; delete">
+
+		<input type="submit" name="edit" value="&#9998; edit">
+    	<input type="submit" name="delete" value="&#9003; delete">
+
+    	{% if likes  == 0 %}
+    	<input type="submit" name="like" value="&#128077;">
+    	{% else %}
+		<input type="submit" name="like" value="{{likes}} &#128077;">
+		{% endif %}
+
+		{% if dislikes == 0 %}
+    	<input type="submit" name="dislike" value="&#128078;">
+    	{% else %}
+    	<input type="submit" name="dislike" value="{{dislikes}} &#128078;">
+    	{% endif %}
+
+
 	</form>
 	<span>{{error}}</span>
 {% endif %}

@@ -9,6 +9,10 @@ secret = 'fart'
 
 ################### Global Helper Function ###########################
 
+def blog_key(name = 'default'):
+	"""the helper function defines the blogs's parent"""
+	return db.Key.from_path('Post', name)
+
 def render_str(template, **params):
     t = jinja_env.get_template(template)
     return t.render(params)
@@ -233,11 +237,7 @@ class Logout(BaseHandler):
 			error = "Please log in first"
 			self.render("login.html", error=error)
 
-############################## Blog Setup ######################################
-
-def blog_key(name = 'default'):
-	"""define the blogs's parent"""
-	return db.Key.from_path('Post', name)
+############################## Blog Database Setup ######################################
 
 class Post(db.Model):
 	"""create a database to store blog posts"""
@@ -251,6 +251,43 @@ class Post(db.Model):
 		"""show line breaks in blog content correctly when page is rendered"""
 		self._render_text = self.content.replace('\n', '</br>')
 		return render_str("permalink.html", post = self)
+
+class Like(db.Model):
+	"""create a database to store likes"""
+	post = db.ReferenceProperty(Post, required=True)
+	user = db.ReferenceProperty(User, required=True)
+
+	@classmethod
+	def by_blog_id(cls, blog_id):
+		"""get number of likes from a blog with its blog id"""
+		l = Like.all().filter('post =', blog_id)
+		return l.count()
+
+	@classmethod
+	def check_like(cls, blog_id, user_id):
+		"""get number of likes from its blog id and user id"""
+		cl = Like.all().filter(
+		    'post =', blog_id).filter('user =', user_id)
+		return cl.count()
+
+class Dislike(db.Model):
+	"""create a database to store all dislikes"""
+	post = db.ReferenceProperty(Post, required=True)
+	user = db.ReferenceProperty(User, required=True)
+
+	@classmethod
+	def by_blog_id(cls, blog_id):
+		"""get number of dislikes from a blog with its blog id"""
+		ul = Dislike.all().filter('post =', blog_id)
+		return ul.count()
+
+	@classmethod
+	def check_dislike(cls, blog_id, user_id):
+		"""get number of dislikes from its blog id and user id"""
+		cul = Dislike.all().filter(
+		    'post =', blog_id).filter(
+		    'user =', user_id)
+		return cul.count()
 
 ############################## Blog Main Page ######################################
 
@@ -275,12 +312,20 @@ class PostPage(BaseHandler):
 			self.error(404)
 			return
 
-		self.render("permalink.html", post = post)
+		likes = Like.by_blog_id(post)
+		dislikes = Dislike.by_blog_id(post)
+
+		self.render("permalink.html", post = post, likes = likes, dislikes = dislikes)
 
 	def post(self, post_id):
 		key = db.Key.from_path('Post', int(post_id), parent = blog_key())
 		post = db.get(key)
 		user_id = User.by_name(self.user.name)
+
+		likes = Like.by_blog_id(post)
+		dislikes = Dislike.by_blog_id(post)
+		liked = Like.check_like(post, user_id)
+		disliked = Dislike.check_dislike(post, user_id)
 
 		if self.user:
 			# check if the user clicks the edit
@@ -290,9 +335,9 @@ class PostPage(BaseHandler):
 					self.redirect('/blog/editpost/%s' % str(post.key().id()))
 				else:
 					error = "You are not authorized to edit this blog"
-					self.render("permalink.html", post = post, error=error)
+					self.render("permalink.html", post = post, error = error)
 			
-			# check if the user clicks the delte
+			# check if the user clicks the delete
 			if self.request.get("delete"):
 				if post.user.key().id() == User.by_name(self.user.name).key().id():
 					db.delete(key)
@@ -300,7 +345,41 @@ class PostPage(BaseHandler):
 					self.redirect('/blog')
 				else:
 					error = "You are not authorized to delete this blog"
-					self.render("permalink.html", post = post, error=error)
+					self.render("permalink.html", post = post, error = error)
+
+			# check if the user clicks the like
+			if self.request.get("like"):
+				# check if the user is trying to like its own blog
+				if post.user.key().id() != User.by_name(self.user.name).key().id():
+					# check the user is already liked or disliked the page, if no, add a like to the database
+					if liked == 0:
+						l = Like(post = post, user = User.by_name(self.user.name))
+						l.put()
+						time.sleep(0.1)
+						self.redirect('/blog/%s' % str(post.key().id()))
+					else:
+						error = "You have already like this blog"
+						self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+				else:
+					error = "You can't like your own blogs"
+					self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+					# check if the user clicks the like
+			
+			if self.request.get("dislike"):
+				# check if the user is trying to like its own blog
+				if post.user.key().id() != User.by_name(self.user.name).key().id():
+					# check the user is already liked or disliked the page, if no, add a like to the database
+					if disliked == 0:
+						dl = Dislike(post = post, user = User.by_name(self.user.name))
+						dl.put()
+						time.sleep(0.1)
+						self.redirect('/blog/%s' % str(post.key().id()))
+					else:
+						error = "You have already dislike this blog"
+						self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+				else:
+					error = "You can't dislike your own blogs"
+					self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
 		else:
 			self.redirect("/login")
 
@@ -324,27 +403,6 @@ class NewPage(BaseHandler):
 		else:
 			error = "subject and content, please!"
 			self.render("newpost.html", subject = subject, content = content, error = error)
-
-# class DeletePost(BaseHandler):
-# 	""" Handles deletion of blog posts"""
-# 	def get(self, post_id):
-# 		if self.user:	
-# 			key = db.Key.from_path('Post', int(post_id), parent = blog_key())
-# 			post = db.get(key)
-# 			if not post:
-# 				self.error(404)
-# 				return
-# 			self.redirect("deletepost.html", post = post)
-# 		else:
-# 			self.redirect("/login")
-
-# 	def post(self, post_id):
-# 		key = db.Key.from_path('Post', int(post_id), parent = blog_key())
-# 		post = db.get(key)
-# 		if post:
-# 			key.delete()
-# 			time.sleep(0.1)
-# 		self.redirect("/blog")
 
 class EditPost(BaseHandler):
 	"""Handles editing blog posts"""
