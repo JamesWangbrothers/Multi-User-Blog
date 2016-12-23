@@ -231,7 +231,7 @@ class Post(db.Model):
 	def render(self):
 		"""show line breaks in blog content correctly when page is rendered"""
 		self._render_text = self.content.replace('\n', '</br>')
-		return render_str("permalink.html", post = self)
+		return render_str("post.html", post = self)
 
 class Like(db.Model):
 	"""create a database to store likes"""
@@ -318,7 +318,7 @@ class PostPage(BaseHandler):
 		comments = Comment.all_by_blog_id(post)
 		comments_count = Comment.count_by_blog_id(post)
 
-		self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+		self.render("post.html", post = post, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 
 	def post(self, post_id):
 		key = db.Key.from_path('Post', int(post_id), parent = blog_key())
@@ -341,7 +341,7 @@ class PostPage(BaseHandler):
 					self.redirect('/blog/editpost/%s' % str(post.key().id()))
 				else:
 					error = "You are not authorized to edit this blog"
-					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+					self.render("post.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 			
 			# check if the user clicks the delete
 			if self.request.get("delete"):
@@ -349,7 +349,7 @@ class PostPage(BaseHandler):
 					self.redirect('/blog/deletepost/%s' % str(post.key().id()))
 				else:
 					error = "You are not authorized to delete this blog"
-					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+					self.render("post.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 
 			# check if the user clicks the like
 			if self.request.get("like"):
@@ -363,10 +363,10 @@ class PostPage(BaseHandler):
 						self.redirect('/blog/%s' % str(post.key().id()))
 					else:
 						error = "You have already like this blog"
-						self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+						self.render("post.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 				else:
 					error = "You can't like your own blogs"
-					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+					self.render("post.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 					# check if the user clicks the like
 			
 			if self.request.get("dislike"):
@@ -380,10 +380,10 @@ class PostPage(BaseHandler):
 						self.redirect('/blog/%s' % str(post.key().id()))
 					else:
 						error = "You have already dislike this blog"
-						self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+						self.render("post.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 				else:
 					error = "You can't dislike your own blogs"
-					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+					self.render("post.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 			
 			if self.request.get("add_comment"):
 				comment_text = self.request.get("comment_text")
@@ -394,7 +394,7 @@ class PostPage(BaseHandler):
 					self.redirect('/blog/%s' % str(post.key().id()))
 				else:
 					comment_error = "Please write your comment"
-					self.render("permalink.html", post = post, comment_error = comment_error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+					self.render("post.html", post = post, comment_error = comment_error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 		
 		else:
 			self.redirect("/login")
