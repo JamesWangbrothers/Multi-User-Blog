@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Are you sure to delete your blog, forever?</h2>
+<form method="POST">
+    <input type="submit" name="delete" value="Delete">
+    <input type="submit" name="cancel" value="Cancel">
+</form>
+
+{% endblock %}

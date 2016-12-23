@@ -289,6 +289,25 @@ class Dislike(db.Model):
 		    'user =', user_id)
 		return cul.count()
 
+class Comment(db.Model):
+	"""create a database to store all comments"""
+	post = db.ReferenceProperty(Post, required=True)
+	user = db.ReferenceProperty(User, required=True)
+	created = db.DateTimeProperty(auto_now_add=True)
+	text = db.TextProperty(required=True)
+
+	@classmethod
+	def count_by_blog_id(cls, blog_id):
+		"""get number of comments for a blog id"""
+		c = Comment.all().filter('post=', blog_id)
+		return c.count()
+
+	@classmethod
+	def all_by_blog_id(cls, blog_id):
+		"""get all comments from a specific blog with its blog id"""
+		c = Comment.all().filter('post =', blog_id).order('created')
+		return c
+
 ############################## Blog Main Page ######################################
 
 class BlogMain(BaseHandler):
@@ -315,7 +334,10 @@ class PostPage(BaseHandler):
 		likes = Like.by_blog_id(post)
 		dislikes = Dislike.by_blog_id(post)
 
-		self.render("permalink.html", post = post, likes = likes, dislikes = dislikes)
+		comments = Comment.all_by_blog_id(post)
+		comments_count = Comment.count_by_blog_id(post)
+
+		self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 
 	def post(self, post_id):
 		key = db.Key.from_path('Post', int(post_id), parent = blog_key())
@@ -327,6 +349,9 @@ class PostPage(BaseHandler):
 		liked = Like.check_like(post, user_id)
 		disliked = Dislike.check_dislike(post, user_id)
 
+		comments = Comment.all_by_blog_id(post)
+		comments_count = Comment.count_by_blog_id(post)
+
 		if self.user:
 			# check if the user clicks the edit
 			if self.request.get("edit"):
@@ -335,17 +360,15 @@ class PostPage(BaseHandler):
 					self.redirect('/blog/editpost/%s' % str(post.key().id()))
 				else:
 					error = "You are not authorized to edit this blog"
-					self.render("permalink.html", post = post, error = error)
+					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 			
 			# check if the user clicks the delete
 			if self.request.get("delete"):
 				if post.user.key().id() == User.by_name(self.user.name).key().id():
-					db.delete(key)
-					time.sleep(0.1)
-					self.redirect('/blog')
+					self.redirect('/blog/deletepost/%s' % str(post.key().id()))
 				else:
 					error = "You are not authorized to delete this blog"
-					self.render("permalink.html", post = post, error = error)
+					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 
 			# check if the user clicks the like
 			if self.request.get("like"):
@@ -359,10 +382,10 @@ class PostPage(BaseHandler):
 						self.redirect('/blog/%s' % str(post.key().id()))
 					else:
 						error = "You have already like this blog"
-						self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+						self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 				else:
 					error = "You can't like your own blogs"
-					self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 					# check if the user clicks the like
 			
 			if self.request.get("dislike"):
@@ -376,10 +399,22 @@ class PostPage(BaseHandler):
 						self.redirect('/blog/%s' % str(post.key().id()))
 					else:
 						error = "You have already dislike this blog"
-						self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+						self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
 				else:
 					error = "You can't dislike your own blogs"
-					self.render("permalink.html", post = post, likes = likes, dislikes = dislikes, error = error)
+					self.render("permalink.html", post = post, error = error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+			
+			if self.request.get("add_comment"):
+				comment_text = self.request.get("comment_text")
+				if comment_text:
+					c = Comment(post = post, user = User.by_name(self.user.name), text = comment_text)
+					c.put()
+					time.sleep(0.1)
+					self.redirect('/blog/%s' % str(post.key().id()))
+				else:
+					comment_error = "Please write your comment"
+					self.render("permalink.html", post = post, comment_error = comment_error, likes = likes, dislikes = dislikes, comments = comments, comments_count = comments_count)
+		
 		else:
 			self.redirect("/login")
 
@@ -449,7 +484,76 @@ class EditPost(BaseHandler):
 		elif self.request.get("cancel"):
 			self.redirect('/blog/%s' % str(post.key().id()))
 
+class DeletePost(BaseHandler):
+	def get(self, post_id):
+		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		post = db.get(key)
+
+		if self.user:
+			if post.user.key().id() == User.by_name(self.user.name).key().id():
+				# go to edite post page
+				self.render("deletepost.html")
+			else:
+				self.response.out.write("You can't delete this post")
+		else:
+			self.redirect('/login')
+
+	def post(self, post_id):
+		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		post = db.get(key)
+		if self.request.get("delete"):
+			db.delete(key)
+			time.sleep(0.1)
+			self.redirect('/blog')
+		elif self.request.get("cancel"):
+			self.redirect('/blog/%s' % str(post.key().id()))
+
+class EditComment(BaseHandler):
+	def get(self, post_id, comment_id):
+		post = Post.get_by_id(int(post_id), parent = blog_key())
+		comment = Comment.get_by_id(int(comment_id))
+
+		if comment:
+			if comment.user.name == self.user.name:
+				self.render("editcomment.html", comment_text = comment.text)
+			else:
+				error = "You can't edit other user's comment"
+				self.render("editcomment.html", error = error)
+		else:
+			error = "No comments for this post, yet"
+			self.render("editcomment.html", error = error)
+
+	def post(self, post_id, comment_id):
+		if self.request.get("update_comment"):
+			comment = Comment.get_by_id(int(comment_id))
+			# check if this user is the author
+			if comment.user.name == self.user.name:
+				comment.text = self.request.get("comment_text")
+				comment.put()
+				time.sleep(0.1)
+				self.redirect("/blog/%s" % str(post_id))
+			else:
+				error = "You can't edit other user's comment"
+				self.render("editcomment.html", comment_text = comment_text, error = error)
+		elif self.request.get("cancel"):
+			self.redirect('/blog/%s' % str(post_id))
+
+class DeleteComment(BaseHandler):
+	def get(self, post_id, comment_id):
+		comment = Comment.get_by_id(int(comment_id))
+
+		if comment:
+			if comment.user.name == self.user.name:
+				db.delete(comment)
+				time.sleep(0.1)
+				self.redirect('/blog')
+			else:
+				self.write("You can't delete a comment from others")
+		else:
+			self.write("This comment was no longer exists")
+
 ########################### Welcome Pages ###################################
+
 class Unit3Welcome(BaseHandler):
 	def get(self):
 		if self.user:
@@ -469,7 +573,11 @@ class MainPage(BaseHandler):
 	def get(self):
 		self.write('Hello, Udacity! It is a happy learning!')
 
-app = webapp2.WSGIApplication([('/unit2/rot13', Rot13), 
+app = webapp2.WSGIApplication([('/', MainPage),
+							   ('/signup', Register),
+							   ('/login', Login),
+							   ('/logout', Logout),
+							   ('/unit2/rot13', Rot13), 
 							   ('/unit2/signup', Unit2Signup), 
 							   ('/unit2/welcome', Welcome),
 							   ('/unit3/welcome', Unit3Welcome),
@@ -477,10 +585,9 @@ app = webapp2.WSGIApplication([('/unit2/rot13', Rot13),
 							   ('/blog/([0-9]+)',PostPage),
 							   ('/blog/newpost', NewPage),
 							   ('/blog/editpost/([0-9]+)', EditPost),
-							   ('/signup', Register),
-							   ('/login', Login),
-							   ('/logout', Logout),
-							   ('/', MainPage)
+							   ('/blog/deletepost/([0-9]+)', DeletePost),
+							   ('/blog/([0-9]+)/editcomment/([0-9]+)', EditComment),
+							   ('/blog/([0-9]+)/deletecomment/([0-9]+)', DeleteComment)
 							   ], debug=True)
 
 
