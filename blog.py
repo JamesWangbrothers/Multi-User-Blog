@@ -104,20 +104,6 @@ def render_post(response, post):
 	response.out.write('<b>' + post.subject + '</br><br>')
 	response.out.write(post.content)
 
-############################# Rot13 ########################################
-
-class Rot13(BaseHandler):
-	def get(self):
-		self.render("rot13.html")
-
-	def post(self):
-		rot13=""
-		text = self.request.get("text")
-		if text:
-			rot13 = text.encode("rot13")
-
-		self.render('rot13.html', text = rot13)
-
 ############################## Users ######################################
 
 class User(db.Model):
@@ -187,11 +173,6 @@ class Signup(BaseHandler):
 	def done(self, *a, **kw):
 		raise NotImplementedError
 
-class Unit2Signup(Signup):
-	def done(self):
-		self.redirect('/unit2/welcome?username='  + self.username)
-
-
 ############################# Register ######################################
 
 class Register(Signup):
@@ -206,7 +187,7 @@ class Register(Signup):
 			u.put()
 
 			self.login(u)
-			self.redirect('unit3/welcome')
+			self.redirect('/welcome')
 
 ############################# Login ######################################
 
@@ -221,7 +202,7 @@ class Login(BaseHandler):
 		u = User.login(username, password)
 		if u:
 			self.login(u)
-			self.redirect('/unit3/welcome')
+			self.redirect('/welcome')
 		else:
 			msg = 'Invalid login'
 			self.render('login.html', error = msg)
@@ -554,34 +535,19 @@ class DeleteComment(BaseHandler):
 
 ########################### Welcome Pages ###################################
 
-class Unit3Welcome(BaseHandler):
+class Welcome(BaseHandler):
 	def get(self):
 		if self.user:
 			self.render('welcome.html', username = self.user.name)
 		else:
 			self.redirect('/signup')
 
-class Welcome(BaseHandler):
-	def get(self):
-		username = self.request.get('username')
-		if valid_username(username):
-			self.render('welcome.html', username = username)
-		else:
-			self.redirect('signup')
-
-class MainPage(BaseHandler):
-	def get(self):
-		self.write('Hello, Udacity! It is a happy learning!')
-
-app = webapp2.WSGIApplication([('/', MainPage),
+app = webapp2.WSGIApplication([('/', BlogMain),
+							   ('/blog/?', BlogMain),
+							   ('/welcome', Welcome),
 							   ('/signup', Register),
 							   ('/login', Login),
-							   ('/logout', Logout),
-							   ('/unit2/rot13', Rot13), 
-							   ('/unit2/signup', Unit2Signup), 
-							   ('/unit2/welcome', Welcome),
-							   ('/unit3/welcome', Unit3Welcome),
-							   ('/blog/?', BlogMain),
+							   ('/logout', Logout),  
 							   ('/blog/([0-9]+)',PostPage),
 							   ('/blog/newpost', NewPage),
 							   ('/blog/editpost/([0-9]+)', EditPost),
