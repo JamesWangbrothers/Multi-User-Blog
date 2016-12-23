@@ -297,7 +297,7 @@ class BlogMain(BaseHandler):
 		# get all posts
 		posts = Post.all().order('-created') ## db.GqlQuery("select * from Post order by created desc limit 10")
 		if posts:
-			self.render("front.html", posts = posts)
+			self.render("home.html", posts = posts)
 
 ############################## Blog Post Page ######################################
 
