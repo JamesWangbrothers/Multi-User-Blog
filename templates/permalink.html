@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-	{{post.render() | safe}}
+<div>
+	<h2>{{post.subject}}</h2>
+    <small>Posted by {{post.user.name}} on {{post.created.strftime("%b %d, %Y")}}</small>
+    <p class="content">{{post.content | safe}}</p>
+</div>
+{% if user %}
+	<form method = "POST">
+		<input type="submit" name='edit' value='&#9998; edit'>
+        <input type="submit" name='delete' value="&#9003; delete">
+	</form>
+	<span>{{error}}</span>
+{% endif %}
 {% endblock %}

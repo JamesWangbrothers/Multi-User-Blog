@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	{% for post in posts %}
+
+		<div>
+			<a href="/blog/{{post.key().id()}}">
+				<h2>{{post.subject}}</h2>
+			</a>
+			<small>Post by {{post.user.name}} on {{post.created.strftime("%b %d, %Y")}}</small>
+			<p>{{post.content | safe}}</p>
+		</div>
+		<hr>
+	{% endfor %}
+	
+{% endblock %}

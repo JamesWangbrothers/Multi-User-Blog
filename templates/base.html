@@ -9,6 +9,13 @@
 	<a href="/blog" class="main-title">
 		CS 253 Blog
 	</a>
+	{% if not user %}
+		<a href="/login">Login</a>
+		<a href="/signup">Sign Up</a>
+	{% elif user %}
+		<a href="/blog/newpost">New Post</a>
+		<a href="/logout">Logout</a>
+	{% endif %}
 
 	<div id="content">
 		{% block content %}
