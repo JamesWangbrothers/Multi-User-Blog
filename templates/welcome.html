@@ -2,12 +2,19 @@
 
 <html>
   <head>
-    <title>Unit 2 Signup</title>
+    <title>Welcome Page</title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/static/main.css">
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
   </head>
 
   <body>
-    <h2>Welcome, {{username}}!</h2>
-    <a href="/blog">Home</a>
-   	<a href="/logout">Logout</a>
+	  <div class="container-fluid">
+	  	<h2>Welcome, {{username}}!</h2>
+	    <a class="btn btn-default" href="/blog"><strong>&#127968; Home</strong></a>
+	   	<a class="btn btn-default" href="/logout"><strong>&#10071;Logout</strong></a>
+		<img src="/static/sunny.jpg" class="img-responsive" alt="Sunny">
+	  </div>
   </body>
 </html>

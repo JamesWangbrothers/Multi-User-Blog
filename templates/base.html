@@ -1,27 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<link type="text/css" rel="stylesheet" href="/static/main.css" />
-	<title>CS 253 Blog</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/static/main.css">
+	<link rel="stylesheet" href="/static/bootstrap.min.css">
+	<title>Fun Blog</title>
 </head>
 
 <body>
-	<a href="/blog" class="main-title">
-		Multi-Users Blog
-	</a>
-	{% if not user %}
-		<a href="/login">Login</a>
-		<a href="/signup">Sign Up</a>
-	{% elif user %}
-		<a href="/blog">Home</a>
-		<a href="/blog/newpost">New Post</a>
-		<a href="/logout">Logout</a>
-	{% endif %}
+	<div class="container-fluid">
+		<div class="row">
+			<img src="/static/nature.jpg" class="img-responsive" alt="Nature">
+			<nav class="navbar navbar-default">
+				<div class="navbar-header">
+					<a href="/blog"><h2>Brilliant Multi-User Blogs</h2></a>
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					{% if not user %}
+						<li><a href="/login">Login</a></li>
+						<li><a href="/signup">Sign Up</a></li>
+					{% elif user %}
+						<li><a href="/blog">Home</a></li>
+						<li><a href="/blog/newpost">New Post</a></li>
+						<li><a href="/logout">Logout</a></li>
+					{% endif %}
+				</ul>
+			</nav>
+		</div>
+	</div>
 
-	<div id="content">
+	<div class="container-fluid">
 		{% block content %}
 		{% endblock %}
 	</div>
 
 </body>
+<footer class="footer">
+	<div class="container-fluid">
+		<p class="text-muted text-center">&#169; Copyright 2016 Shijie Wang</p>
+	</div>
+</footer>
 </html>

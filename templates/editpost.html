@@ -5,18 +5,17 @@
 <h2>Edit Post</h2>
 <form method = "POST">
     <label>
-        Subject<br>
-        <input type="text" name="subject" value={{post.subject}}>
+        Title<br>
+        <input class="form-control" type="text" name="subject" value="{{post.subject}}">
     </label>
     <br><br>
     <label>
         Content<br>
-        <textarea type="text" name="content">{{post.content}}</textarea>
+        <textarea class="form-control" type="text" name="content" style="width:765px; height:350px;">{{post.content}}</textarea>
     </label> 
-    <br>
-    <label>{{error}}</label>
-    <input type="submit" name="update" value="Update">
-    <input type="submit" name="cancel" value="Cancel">
+    <div class="error">{{error}}</div>
+    <input class="btn btn-default" type="submit" name="update" value="&#9997; Update">
+    <input class="btn btn-default" type="submit" name="cancel" value="&#9752; Cancel">
 </form>
 
 {% endblock %}

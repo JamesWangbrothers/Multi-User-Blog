@@ -1,21 +1,36 @@
-body {
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 14px;
-
+.container-fluid {
     width: 800px;
     margin: 0 auto;
-    padding: 10px;
-    color: #333;
 }
 
-h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+.content {
+    height: 100px;
+    overflow: hidden;
+}
+
+.each-blog {
+    margin-left: 32px;
+}
+
+.navbar-header {
+    padding-left:15px;
+}
+
+.navbar-right {
+    padding-top: 10px;
+    padding-right: 15px;
 }
 
 .error {
     color: red;
+}
+
+footer {
+    margin-top: 40px;
+}
+
+img {
+    padding-top: 20px;
 }
 
 label {
@@ -32,6 +47,11 @@ input[type=text] {
     font-size: 20px;
     padding: 2px;
     font-family: monospace;
+    padding-left: 10px;
+}
+
+input[type=submit] {
+  font-size: 14px;
 }
 
 textarea {
@@ -39,10 +59,6 @@ textarea {
   height: 400px;
   font-size: 17px;
   font-family: monospace;
-}
-
-input[type=submit] {
-  font-size: 24px;
 }
 
 .main-title {

@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
+	{% if user and count == 0 %}
+		<h4>You have no post in the blog, please click "New Post" to create one. &#128521;</h4>
+	{% endif %}
+	{% if not user and count == 0 %}
+		<h4>No posts yet. Please Login or Sign up first. &#128521;</h4>
+	{% endif %}
 
 	{% for post in posts %}
-		<div>
-			<a href="/blog/{{post.key().id()}}">
-				<h2>{{post.subject}}</h2>
-			</a>
-			<small>Post by {{post.user.name}} on {{post.created.strftime("%b %d, %Y")}}</small>
-			<p>{{post.content | safe}}</p>
+		<a href="/blog/{{post.key().id()}}"><h3>&#9758; {{post.subject}}</h3></a>
+		<div class="each-blog">
+			<small>by {{post.user.name}} on {{post.created.strftime("%b %d, %Y")}}</small>
+			<br>
+			<p class="text-justify content">{{post.content | safe}}</p>
 		</div>
 		<hr>
 	{% endfor %}
-	
 {% endblock %}

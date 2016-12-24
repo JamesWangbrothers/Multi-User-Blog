@@ -4,18 +4,20 @@
   <h2>New Post</h2>
 
     <form method="post">
-      <label>
-        <div>Subject</div>
-        <input type="text" name="subject" value="{{subject}}">
-      </label>
+      <div class="form-group">
+        <label class="label-control">Subject</label>
+          <input class="form-control" type="text" name="subject" value="{{subject}}" placeholder="title?">
+      </div>
 
-      <label>
-        <div>Content</div>
-        <textarea name="content" value="{{content}}">{{content}}</textarea>
-      </label>
+      <div class="form-group">
+        <label class="label-control">
+          Content<br>
+          <textarea class="form-control" name="content" value="{{content}}" placeholder="starts here..." style="width:765px; height:300px;">{{content}}</textarea>
+        </label>
+        <div class="error">{{error}}</div>
+      </div>
 
-      <div class="error">{{error}}</div>
-
-      <input type="submit">
+      <input class= "btn btn-default" type="submit" value="&#10003; Submit">
+      <input class="btn btn-default" type="submit" name="cancel" value="&#10005; Cancel">
     </form>
 {% endblock %}
