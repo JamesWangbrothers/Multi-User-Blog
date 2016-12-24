@@ -55,19 +55,19 @@ def users_key(group = 'default'):
 	"""get the key from User table"""
 	return db.Key.from_path('users', group)
 
-USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
 	"""validate the username"""
+	USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 	return username and USER_RE.match(username)
 
-PASS_RE = re.compile(r"^.{3,20}$")
 def valid_password(password):
 	"""validate the password"""
+	PASS_RE = re.compile(r"^.{3,20}$")
 	return password and PASS_RE.match(password)
 
-EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 def valid_email(email):
 	"""validate the email"""
+	EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 	return not email or EMAIL_RE.match(email)
 
 ################### Base Handler for Convenience ###########################
@@ -436,16 +436,19 @@ class NewPage(BaseHandler):
 		content = self.request.get('content').replace('\n', '<br>')
 		user_id = User.by_name(self.user.name)
 
-		if self.request.get("cancel"):
-			self.redirect('/blog')
+		if self.user:
+			if self.request.get("cancel"):
+				self.redirect('/blog')
 
-		if subject and content:
-				p = Post(parent = blog_key(), subject = subject, content = content, user = user_id)
-				p.put()
-				self.redirect('/blog/%s' % str(p.key().id()))
+			if subject and content:
+					p = Post(parent = blog_key(), subject = subject, content = content, user = user_id)
+					p.put()
+					self.redirect('/blog/%s' % str(p.key().id()))
+			else:
+				error = "subject and content, please!"
+				self.render("newpost.html", subject = subject, content = content, error = error)
 		else:
-			error = "subject and content, please!"
-			self.render("newpost.html", subject = subject, content = content, error = error)
+			self.redirect("/login")
 
 class EditPost(BaseHandler):
 	"""Handles editing blog posts"""
@@ -541,7 +544,7 @@ class EditComment(BaseHandler):
 			# check if this user is the author
 			if comment.user.name == self.user.name:
 				if comment_text:
-					comment.comment_text = comment_text
+					comment.text = comment_text
 					comment.put()
 					time.sleep(0.1)
 					self.redirect("/blog/%s" % str(post_id))
