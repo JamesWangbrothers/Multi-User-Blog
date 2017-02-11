@@ -53,7 +53,7 @@
 			        </div>
 			    </div>
 			    <p class="comment-content">
-			        {{ comment.content }}
+			        {{comment.content}}
 			    </p>
 			    <div class="clearfix">
 				    {% if user and user.key().id() == comment.user_id %}
@@ -73,6 +73,6 @@
 		{% endfor %}
 	</div>
 
-	<i>{{error}}</i>
+	<i class="error">{{error}}</i>
 
 {% endblock %}

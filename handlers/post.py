@@ -5,6 +5,7 @@ from helpers import *
 class PostPage(BaseHandler):
 	"""The Blog Main page Handler"""
 	
+	# @post_exists
 	def get(self, post_id):
 		# get key for from the blog
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())

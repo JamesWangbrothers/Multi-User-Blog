@@ -5,6 +5,8 @@ from models.like import Like
 
 class UnlikePost(BaseHandler):
 
+    # @post_exists
+    # @user_logged_in
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)

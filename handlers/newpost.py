@@ -13,9 +13,10 @@ class NewPost(BaseHandler):
 			error="you must login first"
 			self.render("base.html", access_error=error)
 
+	# @user_logged_in
 	def post(self):
 		if not self.user:
-			return self.redirect('/login')
+		 	return self.redirect('/login')
 		
 		subject = self.request.get('subject')
 		content = self.request.get('content').replace('\n', '<br>')

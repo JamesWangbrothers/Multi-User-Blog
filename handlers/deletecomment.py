@@ -4,6 +4,8 @@ from helpers import *
 
 class DeleteComment(BaseHandler):
 	"""Handler for delete a comment"""
+	# @comment_exists
+	# @user_logged_in
 	def get(self, post_id, post_user_id, comment_id):
 		if self.user and self.user.key().id() == int(post_user_id):
 			postKey = db.Key.from_path('Post', int(post_id), parent=blog_key())

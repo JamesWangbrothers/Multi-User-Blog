@@ -4,6 +4,9 @@ from helpers import *
 
 class DeletePost(BaseHandler):
 	"""Handler for delete a post"""
+
+	# @post_exists
+	# @user_logged_in
 	def get(self, post_id, post_user_id):
 
 		if self.user and self.user.key().id() == int(post_user_id):
@@ -13,7 +16,7 @@ class DeletePost(BaseHandler):
 			self.redirect("/")
 
 		elif not self.user:
-			self.redirect("/login")
+		 	self.redirect("/login")
 
 		else:
 			key = db.Key.from_path('Post', int(post_id), parent=blog_key())

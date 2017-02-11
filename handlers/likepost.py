@@ -5,6 +5,8 @@ from models.like import Like
 
 class LikePost(BaseHandler):
 
+    # @post_exists
+    # @user_logged_in
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
@@ -12,8 +14,10 @@ class LikePost(BaseHandler):
         if self.user and self.user.key().id() == post.user_id:
             error = "Sorry, you cannot like your own post."
             self.render('base.html', access_error=error)
+
         elif not self.user:
             self.redirect('/login')
+            
         else:
             user_id = self.user.key().id()
             post_id = post.key().id()
@@ -34,3 +38,4 @@ class LikePost(BaseHandler):
                 post.put()
 
                 self.redirect('/' + str(post.key().id()))
+

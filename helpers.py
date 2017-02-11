@@ -8,6 +8,7 @@ import hmac
 import codecs
 import time
 from string import letters
+from functools import wraps
 from google.appengine.ext import db
 
 # Jinja Template
@@ -68,3 +69,48 @@ def valid_email(email):
 	"""validate the email"""
 	EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 	return not email or EMAIL_RE.match(email)
+
+# def check_if_valid_post(function):
+#     @wraps(function)
+#     def wrapper(self, post_id):
+#         key = db.Key.from_path('Post',int(post_id))
+#         post = db.get(key)
+#         if not post:
+#             self.redirect('/login')
+#             return
+# 	return wrapper
+
+# def post_exist(function):
+#     @wraps(function)
+#     def wrapper(self, post_id):
+#         key = db.Key.from_path('Post',int(post_id))
+#         post = db.get(key)
+#         if post:
+#         	return function(self,post_id,post)
+#         else:
+#         	self.error(404)
+#         	return
+# 	return wrapper
+
+# def comment_exists(function):
+#     @wraps(function)
+#     def wrapper(self, post_id, comment_id):
+#     	postKey = db.Key.from_path('Post', int(post_id))
+#         key = db.Key.from_path('Comment', int(comment_id))
+#         comment = db.get(key)
+#         if comment:
+#             return function(self, post_id, comment_id, comment)
+#         else:
+#             self.error(404)
+#             return
+# 	return wrapper
+
+# def user_logged_in(function):
+# 	@wraps(function)
+# 	def wrapper(self):
+# 		if not self.user:
+# 			self.redirect('/login')
+# 		else:
+# 			return
+# 	return wrapper
+
