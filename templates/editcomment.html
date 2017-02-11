@@ -1,10 +1,17 @@
 {% extends "base.html" %}
+
 {% block content %}
-<h1>Edit Comment</h1>
-<form method="POST">
-    <textarea class="form-control" name="comment_text" style="width:770px;height:150px;">{{comment_text}}</textarea>
-    <div class="error">{{error}}</div>
-    <input class="btn btn-default" type="submit" name="update_comment" value="Update">
-    <input class="btn btn-default" type="submit" name="cancel" value="Cancel">
-</form>
+
+<h2>Edit Comment</h2>
+
+<div class="newpost">
+    <div class="newpost-form">
+		<form method="post" autocomplete="off">
+		    <textarea autofocus class="form-control form-textarea" placeholder="Write a response..." type="text" name="content" style="width:770px;height:150px;">{{content}}</textarea>
+		    <input class="button-outline form-submit" type="submit" value="save">
+		    <span class="form_message">{{error}}</span>
+		</form>
+	</div>
+</div>
+
 {% endblock %}

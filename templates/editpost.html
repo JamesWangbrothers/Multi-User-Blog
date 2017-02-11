@@ -2,20 +2,19 @@
 
 {% block content %}
 
-<h2>Edit Post</h2>
-<form method = "POST">
-    <label>
-        Title<br>
-        <input class="form-control" type="text" name="subject" value="{{post.subject}}">
-    </label>
-    <br><br>
-    <label>
-        Content<br>
-        <textarea class="form-control" type="text" name="content" style="width:765px; height:350px;">{{post.content}}</textarea>
-    </label> 
-    <div class="error">{{error}}</div>
-    <input class="btn btn-default" type="submit" name="update" value="&#9997; Update">
-    <input class="btn btn-default" type="submit" name="cancel" value="&#9752; Cancel">
-</form>
+    <div class="editpost">
+        <h2>Edit Post</h2>
+        <div class="editpost-form">
+            <form method = "post">
+                <input autofocus class="form-input" placeholder="Title" type="text" name="subject" value="{{subject}}">
+                <textarea class="form-input" placeholder="Your content startshere..." type="text" name="content">{{content}}</textarea>
+                <a href="/{{post-id}}">
+                    <button class="button-outline">back</button>
+                </a>
+                <input class="button-outline form-submit" type="submit" value="save">
+                <span class="error form-message">{{error}}</span>
+            </form>     
+        </div>
+    </div>
 
 {% endblock %}

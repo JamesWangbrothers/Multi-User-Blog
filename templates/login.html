@@ -1,45 +1,20 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="/static/bootstrap.min.css">
-    <style type="text/css">
-      .error {color: red}
-      body {width: 800px; margin: 0 auto;}
-    </style>
+{% block content %}
 
-  </head>
-
-  <body>
-    <div class="container-fluid">
-      <h2>Login</h2>
-      <form method="post" class="form-horizontal">
-
-          <div class="form-group">
-            <label class="col-sm-3 label-control">Username</label>
-            <div class="col-sm-9">
-              <input class="form-control" type="text" name="username" value="{{username}}" placeholder="Username">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 label-control">Password</label>
-            <div class="col-sm-9">
-              <input class="form-control" type="password" name="password" value="" placeholder="Password">
-              <div class="error">
-                {{error}}
-              </div>
-            </div>
-          </div>
-          
-        <input class="btn btn-default" type="submit" value="&#10004; Submit">
-        <input class="btn btn-default" type="submit" name="cancel" value="&#10008; Cancel">
-      </form>
+<div class="login">
+    <h5 class="login-header">Login</h5>
+    <span class="login-message">{{error}}</span>
+    <div class="login-form">
+        <form method="post">
+            <input autofocus class="form__input" placeholder="Username" type="text" name="username" value="{{username}}">
+            <input class="form__input" placeholder="Password" type="password" name="password" value="">
+            <input class="form__submit" type="submit" value="login">
+        </form>   
     </div>
-  </body>
+    <div class="login-footer">
+        <a href="">Forgot your Password</a>
+    </div>
+</div>
 
-
-</html>
+{% endblock %}

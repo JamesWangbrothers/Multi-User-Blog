@@ -2,6 +2,7 @@ import webapp2
 
 from helpers import *
 from models.user import User
+
 class BaseHandler(webapp2.RequestHandler):
 	"""Basic Handler for coding convenience"""
 

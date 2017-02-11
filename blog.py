@@ -10,7 +10,7 @@ from models.comment import Comment
 
 # Handlers
 from handlers.blogbase import BaseHandler
-from handlers.blogmainpage import BlogMain
+from handlers.blogfront import BlogMain
 from handlers.signup import Signup
 from handlers.login import Login
 from handlers.logout import Logout

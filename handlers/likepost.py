@@ -1,9 +1,9 @@
 from google.appengine.ext import db
-from handlers.blog import BaseHandler
+from handlers.blogbase import BaseHandler
 from helpers import *
 from models.like import Like
 
-class LikePost(BlogHandler):
+class LikePost(BaseHandler):
 
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())

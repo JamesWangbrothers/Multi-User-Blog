@@ -9,12 +9,10 @@
 	{% endif %}
 
 	{% for post in posts %}
-		<a href="/blog/{{post.key().id()}}"><h3>&#9758; {{post.subject}}</h3></a>
-		<div class="each-blog">
-			<small>by {{post.user.name}} on {{post.created.strftime("%b %d, %Y")}}</small>
-			<br>
-			<p class="text-justify content">{{post.content | safe}}</p>
-		</div>
-		<hr>
+		{% if user %}
+			{{ post.render(user.key().id()) | safe }}
+		{% else %}
+			{{ post.render(None) | safe }}
+		{% endif %}
 	{% endfor %}
 {% endblock %}

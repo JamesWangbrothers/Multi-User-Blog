@@ -1,3 +1,7 @@
+from handlers.blogbase import BaseHandler
+from models.user import User
+from helpers import *
+
 class Signup(BaseHandler):
 	"""Handler for user to signup"""
 	def get(self):
@@ -13,14 +17,15 @@ class Signup(BaseHandler):
 		params = dict(username=self.username, password=self.password)
 
 		if not valid_username(self.username):
-			params["error_username"] = "Please enter a valid username."
+			params['error'] = "Please enter a valid username."
 			have_error = True
 
 		if not valid_password(self.password):
-			params["error_password"] = "Please enter a valid password."
+			params['error'] = "Please enter a valid password."
 			have_error = True
+
 		elif self.password != self.verify:
-			params["error_verify"] = "Your password didn't match."
+			params["error"] = "Your password didn't match."
 			have_error = True
 
 		if not valid_email(self.email):
@@ -32,23 +37,16 @@ class Signup(BaseHandler):
 		else:
 			self.done()
 
-		if self.request.get("cancel"):
-			self.redirect('/blog')
-
 	def done(self, *a, **kw):
-		raise NotImplementedError
-
-class Register(Signup):
-	"""Handler for new user to create an acount."""
-	def done(self):
-		# make sure the user doesn't already exist
 		u = User.by_name(self.username)
+
 		if u:
-			msg = 'That user already exists.'
-			self.render('signup.html', error_username = msg)
+			error = 'user already exist'
+			self.render('signup.html', error=error)
+
 		else:
 			u = User.register(self.username, self.password, self.email)
 			u.put()
 
 			self.login(u)
-			self.redirect('/welcome')
+			self.redirect('/')

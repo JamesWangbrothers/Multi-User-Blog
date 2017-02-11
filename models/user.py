@@ -22,7 +22,7 @@ class User(db.Model):
 	def register(cls, name, pw, email = None):
 		"""register by hashing the password first"""
 		pw_hash = make_pw_hash(name, pw)
-		return User(parent = users_key(), name = name, pw_hash = pw_hash, email = email)
+		return User(parent=users_key(), name=name, pw_hash=pw_hash, email=email)
 
 	@classmethod
 	def login(cls, name, pw):

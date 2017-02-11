@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	{% if user %}
+		{{post.render(user.key().id()) | safe}}
+	{% else %}
+		{{post.render(None) | safe}}
+	{% endif %}
+
+	{% if user and user.key().id() == post.user_id %}
+		<a href="/{{post.key().id()}}/delete/{{post.user_id}}">
+			<div class="post-delete">
+				<img src="/static/images/bin.png" alt="delete-post-icon" class="delete-icon">
+			</div>
+		</a>
+		<a href="/{{post.key().id()}}/edit">
+			<div class="post-edit">
+				<img src="/static/images/edit.png" alt="edit-post-icon" class="edit-icon">
+			</div>
+		</a>
+	{% elif user %}
+		<a href="/{{post.key().id()}}/like">
+			<div class="post-like">
+				<img src="/static/images/like.png" alt="like-icon" class="like-icon">
+			</div>
+		</a>
+		<a href="/{{post.key().id()}}/unlike">
+			<div class="post-dislike">
+				<img src="/static/images/dislike.png" alt="dislike-icon" class="dislike-icon">
+			</div>
+		</a>
+	{% endif %}
+
+	{% if user %}
+		<a href="/{{post.key().id()}}/addcomment/{{user.key().id()}}">
+			<div class="post-comment">
+				<img src="/static/images/comment.png" alt="comment-icon" class="comment-icon">
+			</div>
+		</a>
+	{% endif %}
+
+	<div class="comments">
+		{% for comment in comments %}
+			<div class="comment">
+			    <div class="comment-meta">
+			        <div class="meta-author">
+			            <img class="meta-author-image" src="/static/images/compose.png" alt="compose-icon">
+			        </div>
+			        <div class="meta-comment">
+			            <div class="meta-comment-author">{{comment.user_name}}</div>
+			            <div class="meta-comment-date">{{comment.created.strftime("%b %d, %Y")}}</div>
+			        </div>
+			    </div>
+			    <p class="comment-content">
+			        {{ comment.content }}
+			    </p>
+			    <div class="clearfix">
+				    {% if user and user.key().id() == comment.user_id %}
+				    	<a href="/{{post.key().id()}}/{{comment.user_id}}/deletecomment/{{ comment.key().id() }}">
+				    		<div class="comment-delete">
+				    			<img src="/static/images/bin.png" alt="delete-icon" class="delete-icon">
+				    		</div>
+				    	</a>
+				    	<a href="/{{post.key().id()}}/{{comment.user_id}}/editcomment/{{ comment.key().id() }}">
+				    		<div class="comment-edit">
+				    			<img src="/static/images/edit.png" alt="edit-icon" class="edit-icon">
+				    		</div>
+				    	</a>
+				    {% endif %}
+			    </div>
+			</div>
+		{% endfor %}
+	</div>
+
+	<i>{{error}}</i>
+
+{% endblock %}

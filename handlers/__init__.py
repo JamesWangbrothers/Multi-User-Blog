@@ -1,5 +1,5 @@
 from blogbase import BaseHandler
-from blogmainpage import BlogMain
+from blogfront import BlogMain
 from post import PostPage
 from newpost import NewPost
 from editpost import EditPost

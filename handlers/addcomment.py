@@ -1,6 +1,6 @@
 from google.appengine.ext import db
-from handlers.blog import BaseHandler
 from helpers import *
+from handlers.blogbase import BaseHandler
 from models.comment import Comment
 
 class AddComment(BaseHandler):
