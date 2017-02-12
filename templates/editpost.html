@@ -8,10 +8,11 @@
             <form method = "post">
                 <input autofocus class="form-input" placeholder="Title" type="text" name="subject" value="{{subject}}">
                 <textarea class="form-input" placeholder="Your content startshere..." type="text" name="content">{{content}}</textarea>
+                <br>
                 <a href="/{{post_id}}">
-                    <button class="button-outline">back</button>
+                    <button class="button-outline btn btn-info">back</button>
                 </a>
-                <input class="button-outline form-submit" type="submit" value="save">
+                <input class="button-outline form-submit btn btn-success" type="submit" value="save">
                 <span class="error form-message">{{error}}</span>
             </form>     
         </div>
