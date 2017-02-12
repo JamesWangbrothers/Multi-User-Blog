@@ -8,7 +8,11 @@
     <div class="newpost-form">
 		<form method="post" autocomplete="off">
 		    <textarea autofocus class="form-control form-textarea" placeholder="Write a response..." type="text" name="content" style="width:770px;height:150px;">{{content}}</textarea>
-		    <input class="button-outline form-submit" type="submit" value="save">
+		    <br>
+		    <a href="/{{post_id}}">
+                <button class="button-outline btn btn-info">back</button>
+            </a>
+		    <input class="button-outline form-submit btn btn-success" type="submit" value="publish">
 		    <span class="form_message error">{{error}}</span>
 		</form>
 	</div>
