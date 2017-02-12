@@ -19,7 +19,7 @@
 				<div class="navbar-header">
 					<a href="/"><h2>Brilliant Multi-User Blogs</h2></a>
 				</div>
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right btn">
 					{% if not user %}
 						<li><a href="/login">Login</a></li>
 						<li><a href="/signup">Sign Up</a></li>
@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="container-fluid">
-		{{access_error}}
+		{{like_error}}
 		{% block content %}
 		{% endblock %}
 	</div>

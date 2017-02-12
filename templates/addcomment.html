@@ -6,8 +6,10 @@
     <div class="newpost">
         <div class="newpost-form">
             <form method="post" autocomplete="off">
-                <textarea autofocus class="form-textarea" placeholder="Write a response..." type="text" name="content">{{content}}</textarea>
-                <input class="button-outline form-submit" type="submit" value="publish">
+                <textarea autofocus class="form-textarea" placeholder="Write your comment..." type="text" name="content">{{content}}</textarea>
+                <br>
+                <a href="/{{post_id}}" class="btn btn-info">back</a>
+                <input class="button-outline form-submit btn btn-success" type="submit" value="Add">
                 <span class="form-message error">{{error}}</span>
             </form>
         </div>

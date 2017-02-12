@@ -1,19 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<h2 class="login-header">Login</h2>
 <div class="login">
-    <h5 class="login-header">Login</h5>
     <span class="login-message">{{error}}</span>
     <div class="login-form">
         <form method="post">
-            <input autofocus class="form__input" placeholder="Username" type="text" name="username" value="{{username}}">
-            <input class="form__input" placeholder="Password" type="password" name="password" value="">
-            <input class="form__submit" type="submit" value="login">
+            <input autofocus class="form-control form-input" placeholder="Username" type="text" name="username" value="{{username}}">
+            <br>
+            <input autofocus class="form-control form-input" placeholder="Password" type="password" name="password" value="">
+            <div class="login-footer">
+                <a href="">Forgot your Password</a>
+            </div>
+            <br>
+            <input class="form-submit btn btn-success" type="submit" value="login">
         </form>   
-    </div>
-    <div class="login-footer">
-        <a href="">Forgot your Password</a>
     </div>
 </div>
 

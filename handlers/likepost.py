@@ -13,7 +13,7 @@ class LikePost(BaseHandler):
 
         if self.user and self.user.key().id() == post.user_id:
             error = "Sorry, you cannot like your own post."
-            self.render('base.html', access_error=error)
+            self.render('permalink.html', post=post, error=error)
 
         elif not self.user:
             self.redirect('/login')

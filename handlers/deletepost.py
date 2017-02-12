@@ -25,4 +25,4 @@ class DeletePost(BaseHandler):
 			comments = db.GqlQuery("select * from Comment where ancestor is :1 order by created desc limit 10", key)
 
 			error = "You don't have permission to delete this post"
-			self.render("permalink.html",post=post,comments=comments,error=error)
+			self.render("permalink.html", post=post, comments=comments, error=error)

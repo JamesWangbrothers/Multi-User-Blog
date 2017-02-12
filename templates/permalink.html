@@ -8,37 +8,39 @@
 		{{post.render(None) | safe}}
 	{% endif %}
 
-	{% if user and user.key().id() == post.user_id %}
-		<a href="/{{post.key().id()}}/delete/{{post.user_id}}">
-			<div class="post-delete">
-				<img src="/static/images/bin.png" alt="delete-post-icon" class="delete-icon">
-			</div>
-		</a>
-		<a href="/{{post.key().id()}}/edit">
-			<div class="post-edit">
-				<img src="/static/images/edit.png" alt="edit-post-icon" class="edit-icon">
-			</div>
-		</a>
-	{% elif user %}
-		<a href="/{{post.key().id()}}/like">
-			<div class="post-like">
-				<img src="/static/images/like.png" alt="like-icon" class="like-icon">
-			</div>
-		</a>
-		<a href="/{{post.key().id()}}/unlike">
-			<div class="post-dislike">
-				<img src="/static/images/dislike.png" alt="dislike-icon" class="dislike-icon">
-			</div>
-		</a>
-	{% endif %}
-
-	{% if user %}
-		<a href="/{{post.key().id()}}/addcomment/{{user.key().id()}}">
-			<div class="post-comment">
-				<img src="/static/images/comment.png" alt="comment-icon" class="comment-icon">
-			</div>
-		</a>
-	{% endif %}
+	<div class="feedback-meta">
+		{% if user %}
+			<a href="/{{post.key().id()}}/addcomment/{{user.key().id()}}">
+				<div class="post-comment">
+					<img src="/static/images/comment.png" alt="comment-icon" class="comment-icon">
+				</div>
+			</a>
+		{% endif %}
+		
+		{% if user and user.key().id() == post.user_id %}
+			<a href="/{{post.key().id()}}/delete/{{post.user_id}}">
+				<div class="post-delete">
+					<img src="/static/images/bin.png" alt="delete-post-icon" class="delete-icon">
+				</div>
+			</a>
+			<a href="/{{post.key().id()}}/edit">
+				<div class="post-edit">
+					<img src="/static/images/edit.png" alt="edit-post-icon" class="edit-icon">
+				</div>
+			</a>
+		{% elif user %}
+			<a href="/{{post.key().id()}}/like">
+				<div class="post-like">
+					<img src="/static/images/like_it.png" alt="like-it-icon" class="like-icon">
+				</div>
+			</a>
+			<a href="/{{post.key().id()}}/unlike">
+				<div class="post-dislike">
+					<img src="/static/images/unlike_it.png" alt="dislike-it-icon" class="dislike-icon">
+				</div>
+			</a>
+		{% endif %}
+	</div>
 
 	<div class="comments">
 		{% for comment in comments %}

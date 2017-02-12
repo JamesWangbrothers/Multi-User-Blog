@@ -25,12 +25,30 @@
     color: red;
 }
 
-footer {
-    margin-top: 40px;
+.meta-author, .feedback-meta {
+    display: flex;
+}
+
+.post-title {
+    font-size: 24px;
+}
+
+.meta-post-date {
+    float: right;
+}
+
+.meta-author-image {
+    padding: 0px;
+    padding-right: 5px;
 }
 
 img {
-    padding-top: 20px;
+    padding-right: 5px;
+    padding-top: 10px;
+}
+
+footer {
+    margin-top: 40px;
 }
 
 label {
