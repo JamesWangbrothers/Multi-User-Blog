@@ -70,27 +70,25 @@ def valid_email(email):
 	EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
 	return not email or EMAIL_RE.match(email)
 
-# def check_if_valid_post(function):
-#     @wraps(function)
-#     def wrapper(self, post_id):
-#         key = db.Key.from_path('Post',int(post_id))
-#         post = db.get(key)
-#         if not post:
-#             self.redirect('/login')
-#             return
-# 	return wrapper
+def user_logged_in(function):
+	@wraps(function)
+	def wrapper(self, *arg, **params):
+		if not self.user:
+			self.redirect('/login')
+		else:
+			return function(self, *arg, **params)
+	return wrapper
 
-# def post_exist(function):
-#     @wraps(function)
-#     def wrapper(self, post_id):
-#         key = db.Key.from_path('Post',int(post_id))
-#         post = db.get(key)
-#         if post:
-#         	return function(self,post_id,post)
-#         else:
-#         	self.error(404)
-#         	return
-# 	return wrapper
+def post_exists(function):
+    @wraps(function)
+    def wrapper(self, post_id):
+        key = db.Key.from_path('Post', int(post_id))
+        post = db.get(key)
+        if not post:
+        	self.error(404)
+        else:
+        	return
+	return wrapper
 
 # def comment_exists(function):
 #     @wraps(function)
@@ -103,14 +101,5 @@ def valid_email(email):
 #         else:
 #             self.error(404)
 #             return
-# 	return wrapper
-
-# def user_logged_in(function):
-# 	@wraps(function)
-# 	def wrapper(self):
-# 		if not self.user:
-# 			self.redirect('/login')
-# 		else:
-# 			return
 # 	return wrapper
 

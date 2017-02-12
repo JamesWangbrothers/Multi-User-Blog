@@ -5,18 +5,14 @@ from models.comment import Comment
 
 class AddComment(BaseHandler):
 
-	# @user_logged_in
+	@user_logged_in
 	def get(self, post_id, user_id):
-		if not self.user:
-			self.redirect('/login')
-		else:
-			self.render("/addcomment.html")
+
+		self.render("/addcomment.html")
 
 	# @post_exists
-	# @user_logged_in
+	@user_logged_in
 	def post(self, post_id, user_id):
-		if not self.user:
-			return 
 
 		content = self.request.get('content')
 		if content:

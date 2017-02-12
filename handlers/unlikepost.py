@@ -6,15 +6,13 @@ from models.like import Like
 class UnlikePost(BaseHandler):
 
     # @post_exists
-    # @user_logged_in
+    @user_logged_in
     def get(self, post_id):
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
 
         if self.user and self.user.key().id() == post.user_id:
             self.write("You cannot dislike your own post")
-        elif not self.user:
-            self.redirect('/login')
         else:
             user_id = self.user.key().id()
             post_id = post.key().id()

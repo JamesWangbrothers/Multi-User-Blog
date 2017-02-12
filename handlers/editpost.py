@@ -6,37 +6,34 @@ from helpers import *
 class EditPost(BaseHandler):
 	"""Handles editing blog posts"""
 
-	# @check_if_valid_post
-	# @user_logged_in
+	# @post_exists
+	@user_logged_in
 	def get(self, post_id):
+
 		# get the key for this post
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
 
 		if not post:
-			self.redirect("/login")
+			self.error(404)
 		
 		# check if the user is logged in, and if this user is the author of this post
 		if self.user and self.user.key().id() == post.user_id:
 			# go to edite post page
 			self.render("editpost.html", subject=post.subject, content=post.content, post_id=post_id)
-		elif not self.user:
-			self.redirect('/login')
 		else:
 			self.write("You can't edit this post!")
-
-	# @check_if_valid_post
-	# @user_logged_in
+	
+	# @post_exists
+	@user_logged_in
 	def post(self, post_id):
+
 		# get the key for this post
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
 
 		if not post:
-			self.redirect("/login")
-
-		if not self.user:
-			self.redirect('/login')
+			self.error(404)
 
 		if self.user and self.user.key().id() == post.user_id:
 			# get the subject, content and user id when the form is submitted
