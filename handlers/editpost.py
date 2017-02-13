@@ -6,7 +6,6 @@ from helpers import *
 class EditPost(BaseHandler):
 	"""Handles editing blog posts"""
 
-	# @post_exists
 	@user_logged_in
 	def get(self, post_id):
 
@@ -24,7 +23,6 @@ class EditPost(BaseHandler):
 		else:
 			self.write("You can't edit this post!")
 	
-	# @post_exists
 	@user_logged_in
 	def post(self, post_id):
 
