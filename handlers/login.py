@@ -3,6 +3,7 @@ from models.user import User
 
 class Login(BaseHandler):
 	"""Handler for user login"""
+	
 	def get(self):
 		self.render('login.html')
 

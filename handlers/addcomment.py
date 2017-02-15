@@ -10,7 +10,6 @@ class AddComment(BaseHandler):
 
 		self.render("/addcomment.html")
 
-	# @post_exists
 	@user_logged_in
 	def post(self, post_id, user_id):
 

@@ -2,6 +2,7 @@ from handlers.blogbase import BaseHandler
 
 class Logout(BaseHandler):
 	"""Handler for user logout"""
+	
 	def get(self):
 		if self.user:
 			self.logout()

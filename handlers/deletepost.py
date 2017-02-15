@@ -5,7 +5,6 @@ from helpers import *
 class DeletePost(BaseHandler):
 	"""Handler for delete a post"""
 
-	# @post_exists
 	@user_logged_in
 	def get(self, post_id, post_user_id):
 

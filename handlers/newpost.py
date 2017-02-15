@@ -5,6 +5,7 @@ from helpers import *
 class NewPost(BaseHandler):
 	"""Handler for creating a new Post"""
 
+	@user_logged_in
 	def get(self):
 		# if user is login, go to newpost page
 		if self.user:
@@ -13,7 +14,7 @@ class NewPost(BaseHandler):
 			error="you must login first"
 			self.render("base.html", access_error=error)
 
-	# @user_logged_in
+	@user_logged_in
 	def post(self):
 		
 		subject = self.request.get('subject')

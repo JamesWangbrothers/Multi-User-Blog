@@ -4,6 +4,7 @@ from helpers import *
 
 class EditComment(BaseHandler):
 	"""Handler for edit a comment"""
+	
 	# @comment_exists
 	@user_logged_in
 	def get(self, post_id, post_user_id, comment_id):
