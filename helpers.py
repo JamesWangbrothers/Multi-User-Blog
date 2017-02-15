@@ -8,7 +8,7 @@ import hmac
 import codecs
 import time
 from string import letters
-from functools import wraps
+from functools import wraps, partial
 from google.appengine.ext import db
 
 # Jinja Template
@@ -72,23 +72,26 @@ def valid_email(email):
 
 def user_logged_in(function):
 	@wraps(function)
-	def wrapper(self, *arg, **params):
+	def wrapper(self, *args, **params):
 		if not self.user:
 			self.redirect('/login')
 		else:
-			return function(self, *arg, **params)
+			return function(self, *args, **params)
 	return wrapper
 
-# def post_exists(function):
-#     @wraps(function)
-#     def wrapper(self, post_id):
-#         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-#         post = db.get(key)
-#         if not post:
-#         	self.error(404)
-#         else:
-#         	return function(self, post_id)
-# 	return wrapper
+def post_exists(function):
+    @wraps(function)
+    def wrapper(self, *args, **params):
+    	print('args -',args)
+    	print('params -',params)
+        key = db.Key.from_path('Post', int(args), parent=blog_key())
+        post = db.get(key)
+        print key
+        if not post:
+        	self.error(404)
+        else:
+        	return function(self, **params)
+	return wrapper
 
 # def comment_exists(function):
 #     @wraps(function)

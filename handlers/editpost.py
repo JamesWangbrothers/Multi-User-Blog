@@ -6,10 +6,11 @@ from helpers import *
 class EditPost(BaseHandler):
 	"""Handles editing blog posts"""
 
-	@user_logged_in
+	@post_exists
+	# @user_logged_in
 	def get(self, post_id):
 
-		# get the key for this post
+		# get the key for this posts
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
 
@@ -23,7 +24,8 @@ class EditPost(BaseHandler):
 		else:
 			self.write("You can't edit this post!")
 	
-	@user_logged_in
+	@post_exists
+	# @user_logged_in
 	def post(self, post_id):
 
 		# get the key for this post

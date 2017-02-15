@@ -13,7 +13,7 @@ class NewPost(BaseHandler):
 			error="you must login first"
 			self.render("base.html", access_error=error)
 
-	@user_logged_in
+	# @user_logged_in
 	def post(self):
 		
 		subject = self.request.get('subject')
