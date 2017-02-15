@@ -1,11 +1,12 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
 from helpers import *
+from decorators import *
 
 
 class EditPost(BaseHandler):
 	"""Handles editing blog posts"""
-
+	
 	@post_exists
 	@user_logged_in
 	@user_owns_post

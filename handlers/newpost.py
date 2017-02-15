@@ -1,6 +1,7 @@
 from handlers.blogbase import BaseHandler
 from models.post import Post
 from helpers import *
+from decorators import *
 
 class NewPost(BaseHandler):
 	"""Handler for creating a new Post"""

@@ -1,7 +1,8 @@
 from google.appengine.ext import db
-from helpers import *
 from handlers.blogbase import BaseHandler
 from models.comment import Comment
+from helpers import *
+from decorators import *
 
 class AddComment(BaseHandler):
 

@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
 from helpers import *
+from decorators import *
 
 class DeleteComment(BaseHandler):
 	"""Handler for delete a comment"""

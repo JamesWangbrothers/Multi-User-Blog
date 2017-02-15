@@ -1,7 +1,8 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
-from helpers import *
 from models.like import Like
+from helpers import *
+from decorators import *
 
 class LikePost(BaseHandler):
 
