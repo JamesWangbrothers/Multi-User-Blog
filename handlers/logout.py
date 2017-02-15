@@ -1,12 +1,10 @@
 from handlers.blogbase import BaseHandler
+from helpers import *
 
 class Logout(BaseHandler):
 	"""Handler for user logout"""
 	
+	@user_logged_in
 	def get(self):
-		if self.user:
-			self.logout()
-			self.redirect('/')
-		else:
-			error = "Please log in first"
-			self.render("login.html", error = error)
+		self.logout()
+		self.redirect('/')

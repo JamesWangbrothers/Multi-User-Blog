@@ -72,11 +72,11 @@ def valid_email(email):
 
 def user_logged_in(function):
 	@wraps(function)
-	def wrapper(self, *args, **params):
+	def wrapper(self, *args, **kwargs):
 		if not self.user:
 			self.redirect('/login')
 		else:
-			return function(self, *args, **params)
+			return function(self, *args, **kwargs)
 	return wrapper
 
 def post_exists(function):
@@ -84,7 +84,6 @@ def post_exists(function):
 	def wrapper(self, post_id, *args):
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
-		print key
 		if not post:
 			self.error(404)
 		else:
@@ -103,20 +102,32 @@ def comment_exists(function):
 			return function(self, post_id, post_user_id, comment_id)
 	return wrapper
 
-# def user_owns_post(function):
-# 	@wraps(function)
-# 	def wrapper(self, post_id):
-# 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-# 		post = db.get(key)
-# 		author = post.user_id
-# 		logged_in_user = self.user.key().id()
-		
-# 		if author != logged_in_user:
-# 			error = "you can't edit this post!"
-# 			self.render("front.html", error = error)
-# 		else:
-# 			return function(self, post_id)
-# 	return wrapper
+def user_owns_post(function):
+	@wraps(function)
+	def wrapper(self, post_id, *args):
+		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		post = db.get(key)
+
+		if self.user.key().id() != post.user_id:
+			error = "you don't have permission for this post!"
+			comments = db.GqlQuery("select * from Comment where ancestor is :1 order by created desc limit 10", key)	
+			self.render("permalink.html", post=post, comments=comments, error=error)
+		else:
+			return function(self, post_id, *args)
+	return wrapper
+
+def user_not_owns_post(function):
+	@wraps(function)
+	def wrapper(self, post_id, *args):
+		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		post = db.get(key)
+
+		if self.user.key().id() == post.user_id:
+			error = "Sorry, you can not like or dislike your own post"	
+			self.render('permalink.html', post=post, error=error)
+		else:
+			return function(self, post_id, *args)
+	return wrapper
 
 # def user_owns_comment(function):
 # 	@wraps(function)

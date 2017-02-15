@@ -13,9 +13,4 @@ class PostPage(BaseHandler):
 
 		comments = db.GqlQuery("select * from Comment where ancestor is :1 order by created desc limit 10", key)
 
-		# if the blog does not exist, show a 404 error
-		if not post:
-			self.error(404)
-			return
-
 		self.render("permalink.html", post=post, comments=comments)

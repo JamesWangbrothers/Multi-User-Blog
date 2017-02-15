@@ -7,12 +7,8 @@ class NewPost(BaseHandler):
 
 	@user_logged_in
 	def get(self):
-		# if user is login, go to newpost page
-		if self.user:
-			self.render("newpost.html")
-		else:
-			error="you must login first"
-			self.render("base.html", access_error=error)
+
+		self.render("newpost.html")
 
 	@user_logged_in
 	def post(self):

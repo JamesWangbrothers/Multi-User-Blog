@@ -4,6 +4,7 @@ from helpers import *
 
 class Signup(BaseHandler):
 	"""Handler for user to signup"""
+	
 	def get(self):
 		self.render("signup.html")
 
