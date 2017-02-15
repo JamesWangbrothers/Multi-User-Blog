@@ -93,15 +93,14 @@ def post_exists(function):
 
 def comment_exists(function):
 	@wraps(function)
-	def wrapper(self, post_id, comment_id):
-		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-		post = db.get(key)
-		comment_key = db.Key.from_path('Comment', int(comment_id), parent=self.user.key())
+	def wrapper(self, post_id, post_user_id, comment_id):
+		postKey = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		comment_key = db.Key.from_path('Comment', int(comment_id), parent=postKey)
 		comment = db.get(comment_key)
 		if not comment:
 			self.error(404)
 		else:
-			return function(self, post_id, comment_id, comment)
+			return function(self, post_id, post_user_id, comment_id)
 	return wrapper
 
 # def user_owns_post(function):
