@@ -81,28 +81,28 @@ def user_logged_in(function):
 
 def post_exists(function):
 	@wraps(function)
-	def wrapper(self, post_id):
+	def wrapper(self, post_id, *args):
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
 		print key
 		if not post:
 			self.error(404)
 		else:
-			return function(self, post_id)
+			return function(self, post_id, *args)
 	return wrapper
 
-# def comment_exists(function):
-#     @wraps(function)
-#     def wrapper(self, post_id, comment_id):
-#     	key = db.Key.from_path('Post', int(post_id), parent=blog_key())
-#     	post = db.get(key)
-#         comment_key = db.Key.from_path('Comment', int(comment_id), parent=self.user.key())
-#         comment = db.get(comment_key)
-#         if not comment:
-#             self.error(404)
-#         else:
-#             return function(self, post_id, comment_id, comment)
-# 	return wrapper
+def comment_exists(function):
+	@wraps(function)
+	def wrapper(self, post_id, comment_id):
+		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		post = db.get(key)
+		comment_key = db.Key.from_path('Comment', int(comment_id), parent=self.user.key())
+		comment = db.get(comment_key)
+		if not comment:
+			self.error(404)
+		else:
+			return function(self, post_id, comment_id, comment)
+	return wrapper
 
 # def user_owns_post(function):
 # 	@wraps(function)
