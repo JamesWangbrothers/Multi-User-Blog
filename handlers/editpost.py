@@ -1,6 +1,5 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
-from helpers import *
 from decorators import *
 
 
@@ -15,7 +14,7 @@ class EditPost(BaseHandler):
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
 
-		self.render("editpost.html", subject=post.subject, content=post.content, post_id=post_id)
+		self.render('editpost.html', subject=post.subject, content=post.content, post_id=post_id)
 	
 	@post_exists
 	@user_logged_in
@@ -26,8 +25,8 @@ class EditPost(BaseHandler):
 		post = db.get(key)
 
 		# get the subject, content and user id when the form is submitted
-		subject = self.request.get("subject")
-		content = self.request.get("content")
+		subject = self.request.get('subject')
+		content = self.request.get('content')
 
 		if subject and content:
 
@@ -35,7 +34,7 @@ class EditPost(BaseHandler):
 			post.content = content
 			post.put()
 
-			self.redirect("/%s" % str(post.key().id()))
+			self.redirect('/%s' % str(post.key().id()))
 		else:
-			error = "please enter both subject and content!"
-			self.render("newpost.html", subject=subject, content=content, error=error)
+			error = 'please enter both subject and content!'
+			self.render('newpost.html', subject=subject, content=content, error=error)

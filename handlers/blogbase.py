@@ -1,5 +1,4 @@
 import webapp2
-
 from helpers import *
 from models.user import User
 

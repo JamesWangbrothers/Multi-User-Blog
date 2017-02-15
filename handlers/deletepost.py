@@ -1,6 +1,5 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
-from helpers import *
 from decorators import *
 
 class DeletePost(BaseHandler):
@@ -14,6 +13,6 @@ class DeletePost(BaseHandler):
 		post = db.get(key)
 		post.delete()
 
-		self.redirect("/")
+		self.redirect('/')
 
 

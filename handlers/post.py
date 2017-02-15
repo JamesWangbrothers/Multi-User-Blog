@@ -1,6 +1,5 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
-from helpers import *
 from decorators import *
 
 class PostPage(BaseHandler):
@@ -12,6 +11,6 @@ class PostPage(BaseHandler):
 		key = db.Key.from_path('Post', int(post_id), parent=blog_key())
 		post = db.get(key)
 
-		comments = db.GqlQuery("select * from Comment where ancestor is :1 order by created desc limit 10", key)
+		comments = db.GqlQuery('select * from Comment where ancestor is :1 order by created desc limit 10', key)
 
-		self.render("permalink.html", post=post, comments=comments)
+		self.render('permalink.html', post=post, comments=comments)

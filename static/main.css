@@ -25,7 +25,7 @@
     color: red;
 }
 
-.meta-author, .feedback-meta {
+.meta-author, .feedback-meta{
     display: flex;
 }
 
@@ -42,13 +42,23 @@
     padding-right: 5px;
 }
 
+.img-responsive {
+    padding: 0px;
+    position: fixed;
+    z-index: -1;
+    opacity: 0.6;
+}
+
 img {
     padding-right: 5px;
     padding-top: 10px;
+    position: relative;
+    height: 100%;
 }
 
 footer {
-    margin-top: 40px;
+    margin-top: 30px;
+    position: absolute;
 }
 
 label {
@@ -89,8 +99,19 @@ textarea {
     text-decoration: none;
 }
 
-.post + .post {
+.post {
     margin-top: 15px;
+}
+
+.post-back {
+    padding-top: 10px;
+    margin-left: 16px;
+}
+
+.post-border {
+    background: white;
+    border-left: 7px solid lightblue;
+    border-right: 7px solid lightblue;
 }
 
 .post-heading {
@@ -103,15 +124,37 @@ textarea {
     font-weight: bold;
 }
 
+.post-main, .post-like {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.post-like {
+    padding-bottom: 10px;
+}
+
+.feedback-meta {
+    margin-left: 16px;
+}
+
 .post-date {
     position: absolute;
     right: 0px;
     bottom: 0px;
     color: #999;
+}
 
+.meta-post-date {
+    margin-top: 10px;
 }
 
 .post-content {
     margin-top: 5px;
+    background: lightblue;
+    border: 2px dashed lightblue;
+    border-radius: 5px;
+    text-align: justify;
 }
 

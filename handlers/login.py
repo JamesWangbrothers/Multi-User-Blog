@@ -8,16 +8,22 @@ class Login(BaseHandler):
 		self.render('login.html')
 
 	def post(self):
-		username = self.request.get('username')
-		password = self.request.get('password')
+		self.username = self.request.get('username')
+		self.password = self.request.get('password')
 
-		u = User.login(username, password)
-		if u:
-			self.login(u)
-			self.redirect('/')
+		if self.username and self.password:
+			u = User.login(self.username, self.password)
+			name = User.by_name(self.username)
+
+			if u:
+				self.login(u)
+				self.redirect('/')
+			elif not name:
+				error = 'username not exists'
+				self.render('login.html', error=error)
+			else:
+				error = 'incorrect password'
+				self.render('login.html', error=error)	
 		else:
-			msg = 'Invalid login'
-			self.render('login.html', error = msg)
-
-		if self.request.get("cancel"):
-			self.redirect('/')
+			error = "please enter both username and password"
+			self.render('login.html', error=error)

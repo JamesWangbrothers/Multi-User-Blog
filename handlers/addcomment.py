@@ -1,7 +1,6 @@
 from google.appengine.ext import db
 from handlers.blogbase import BaseHandler
 from models.comment import Comment
-from helpers import *
 from decorators import *
 
 class AddComment(BaseHandler):
@@ -10,7 +9,7 @@ class AddComment(BaseHandler):
 	@post_exists
 	def get(self, post_id, user_id):
 
-		self.render("/addcomment.html")
+		self.render('/addcomment.html')
 
 	@user_logged_in
 	@post_exists
@@ -28,5 +27,5 @@ class AddComment(BaseHandler):
 
 			self.redirect('/' + post_id)
 		else:
-			error = "enter content, please!"
-			self.render("addcomment.html", content=content, error=error)
+			error = 'enter content, please!'
+			self.render('addcomment.html', content=content, error=error)

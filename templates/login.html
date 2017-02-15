@@ -3,7 +3,7 @@
 {% block content %}
 <h2 class="login-header">Login</h2>
 <div class="login">
-    <span class="login-message">{{error}}</span>
+    <span class="login-message error">{{error}}</span>
     <div class="login-form">
         <form method="post">
             <input autofocus class="form-control form-input" placeholder="Username" type="text" name="username" value="{{username}}">
@@ -13,8 +13,10 @@
                 <a href="">Forgot your Password</a>
             </div>
             <br>
+            <div>
             <input class="form-submit btn btn-success" type="submit" value="login">
-        </form>   
+            </div>
+        </form>
     </div>
 </div>
 

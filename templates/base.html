@@ -10,27 +10,25 @@
 	<link rel="stylesheet" type="text/css" href="/static/main.css">
 	<link rel="stylesheet" href="/static/bootstrap.min.css">
 </head>
-
 <body>
+	<img src="/static/images/sunny.jpg" class="img-responsive" alt="Sunny">
 	<div class="container-fluid">
-		<div class="row">
-			<img src="/static/nature.jpg" class="img-responsive" alt="Nature">
-			<nav class="navbar navbar-default">
-				<div class="navbar-header">
-					<a href="/"><h2>Brilliant Multi-User Blogs</h2></a>
-				</div>
-				<ul class="nav navbar-nav navbar-right btn">
-					{% if not user %}
-						<li><a href="/login">Login</a></li>
-						<li><a href="/signup">Sign Up</a></li>
-					{% elif user %}
-						<li><a href="/">Home</a></li>
-						<li><a href="/newpost">New Post</a></li>
-						<li><a href="/logout">Logout</a></li>
-					{% endif %}
-				</ul>
-			</nav>
-		</div>
+		<nav class="navbar-default">
+			<div class="navbar-header">
+				<a href="/"><h2>Multi-User Blogs</h2></a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+					<li><a href="/">Home</a></li>
+				{% if not user %}
+					<li><a href="/login">Login</a></li>
+					<li><a href="/signup">Sign Up</a></li>
+				{% elif user %}
+
+					<li><a href="/newpost">New Post</a></li>
+					<li><a href="/logout">Logout</a></li>
+				{% endif %}
+			</ul>
+		</nav>
 	</div>
 
 	<div class="container-fluid">
@@ -38,11 +36,10 @@
 		{% block content %}
 		{% endblock %}
 	</div>
-
 </body>
 <footer class="footer">
-	<div class="container-fluid text-center text-muted">
-		<small>&#169; Copyright 2016 Shijie Wang,</small></br>
+	<div class="container text-center text-muted">
+		<small>&#169; Copyright 2016 Shijie Wang</small></br>
 		<small>Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a>, <a href="http://www.flaticon.com/authors/bryn-taylor" title="Bryn Taylor">Bryn Taylor</a>, <a href="http://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> and <a href="http://www.flaticon.com/authors/icon-works" title="Icon Works">Icon Works</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></small>
 	</div>
 </footer>

@@ -1,6 +1,5 @@
 from handlers.blogbase import BaseHandler
 from models.post import Post
-from helpers import *
 from decorators import *
 
 class NewPost(BaseHandler):
@@ -9,7 +8,7 @@ class NewPost(BaseHandler):
 	@user_logged_in
 	def get(self):
 
-		self.render("newpost.html")
+		self.render('newpost.html')
 
 	@user_logged_in
 	def post(self):
@@ -22,5 +21,5 @@ class NewPost(BaseHandler):
 			p.put()
 			self.redirect('/%s' % str(p.key().id()))
 		else:
-			error = "enter subject and content, please!"
+			error = 'enter subject and content, please!'
 			self.render("newpost.html", subject=subject, content=content, error=error)

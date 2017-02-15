@@ -8,7 +8,8 @@
 		{{post.render(None) | safe}}
 	{% endif %}
 
-	<div class="feedback-meta">
+	<div>
+		<div class="feedback-meta">
 		{% if user %}
 			<a href="/{{post.key().id()}}/addcomment/{{user.key().id()}}">
 				<div class="post-comment">
@@ -16,30 +17,35 @@
 				</div>
 			</a>
 		{% endif %}
-		
 		{% if user and user.key().id() == post.user_id %}
-			<a href="/{{post.key().id()}}/delete/{{post.user_id}}">
-				<div class="post-delete">
-					<img src="/static/images/bin.png" alt="delete-post-icon" class="delete-icon">
-				</div>
-			</a>
-			<a href="/{{post.key().id()}}/edit">
-				<div class="post-edit">
-					<img src="/static/images/edit.png" alt="edit-post-icon" class="edit-icon">
-				</div>
-			</a>
-		{% elif user %}
-			<a href="/{{post.key().id()}}/like">
-				<div class="post-like">
-					<img src="/static/images/like_it.png" alt="like-it-icon" class="like-icon">
-				</div>
-			</a>
-			<a href="/{{post.key().id()}}/unlike">
-				<div class="post-dislike">
-					<img src="/static/images/unlike_it.png" alt="dislike-it-icon" class="dislike-icon">
-				</div>
-			</a>
-		{% endif %}
+            <a href="/{{post.key().id()}}/delete/{{post.user_id}}">
+                <div class="post-delete">
+                    <img src="/static/images/bin.png" alt="delete-post-icon" class="delete-icon">
+                </div>
+            </a>
+            <a href="/{{post.key().id()}}/edit">
+                <div class="post-edit">
+                    <img src="/static/images/edit.png" alt="edit-post-icon" class="edit-icon">
+                </div>
+            </a>
+        {% elif user %}
+            <a href="/{{post.key().id()}}/like">
+                <div class="post-like">
+                    <img src="/static/images/like_it.png" alt="like-it-icon" class="like-icon">
+                </div>
+            </a>
+            <a href="/{{post.key().id()}}/unlike">
+                <div class="post-dislike">
+                    <img src="/static/images/unlike_it.png" alt="dislike-it-icon" class="dislike-icon">
+                </div>
+            </a>
+        {% endif %}
+        </div>
+        <div class="post-back">
+        <a href="/{{post_id}}">
+            <button class="button-outline btn btn-info">back</button>
+        </a>
+        </div>
 	</div>
 
 	<div class="comments">
