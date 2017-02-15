@@ -7,13 +7,11 @@ class DeleteComment(BaseHandler):
 
 	@comment_exists
 	@user_logged_in
+	@user_owns_comment
 	def get(self, post_id, post_user_id, comment_id):
-		if self.user and self.user.key().id() == int(post_user_id):
-			postKey = db.Key.from_path('Post', int(post_id), parent=blog_key())
-			comment_key = db.Key.from_path('Comment', int(comment_id), parent=postKey)
-			comment = db.get(comment_key)
-			comment.delete()
+		postKey = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		comment_key = db.Key.from_path('Comment', int(comment_id), parent=postKey)
+		comment = db.get(comment_key)
+		comment.delete()
 
-			self.redirect('/' + post_id)
-		else:
-			self.write("You don't permission to delete this comment")
+		self.redirect('/' + post_id)

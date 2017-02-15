@@ -74,7 +74,8 @@ def user_logged_in(function):
 	@wraps(function)
 	def wrapper(self, *args, **kwargs):
 		if not self.user:
-			self.redirect('/login')
+			error = "please login first"
+			self.render("login.html", error=error)
 		else:
 			return function(self, *args, **kwargs)
 	return wrapper
@@ -129,18 +130,17 @@ def user_not_owns_post(function):
 			return function(self, post_id, *args)
 	return wrapper
 
-# def user_owns_comment(function):
-# 	@wraps(function)
-# 	def wrapper(self, post_id):
-# 	    comment_key = db.Key.from_path('Comment', int(comment_id), parent=self.user.key())
-#         comment = db.get(comment_key)
-#         author = comment.user_id
-#         logged_in_user = self.user.key().id()
+def user_owns_comment(function):
+	@wraps(function)
+	def wrapper(self, post_id, post_user_id, comment_id):
+		postKey = db.Key.from_path('Post', int(post_id), parent=blog_key())
+		comment_key = db.Key.from_path('Comment', int(comment_id), parent=postKey)
+		comment = db.get(comment_key)
 
-#         if author != logged_in_user:
-#         	error = "you can't edit this comment!"
-#         	self.render("front.html", error = error)
-#         else:
-#         	return function(self, post_id, comment_id)
-# 	return wrapper
+		if self.user.key().id() != int(post_user_id):
+			error = "you can't edit or delete your own comment!"
+			self.render("front.html", error=error)
+		else:
+			return function(self, post_id, post_user_id, comment_id)
+	return wrapper
 
